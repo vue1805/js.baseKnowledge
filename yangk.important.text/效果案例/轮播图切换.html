@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        #container{width: 200px;height: 200px;margin:30px auto;}
+        /* #container ul{width: 1000px;height: 200px;} */
+        /* ul li{list-style: none;float: left;float:left;}
+        ul li img{width: 200px;height: 200px;}
+         ul:hover{transform: translateX(-1000px)}; */
+         img{width: 200px;height: 200px;}
+    </style>
+</head>
+<body>
+    <div id="container">
+        <img src="../img/1.jpg" alt="" id="showpictures">
+    </div>
+    <script>
+         var showPictures=document.getElementById('showpictures');
+         var index=1;//定义初始第一张显示
+         //函数定时，每隔时间执行
+            var  timer=setInterval(inde
+              ,1000);
+
+             //clearInterval(intervalID)：清除指定id标识的定时器操作   
+             //鼠标移入的时候停止；
+             showPictures.onmouseover=function(){
+                 clearInterval(timer);
+             };
+             showPictures.onmouseout=function(){
+                 //此处的timer不能为局部变量
+               timer= setInterval(inde
+              ,1000);
+             };
+             //封装函数
+              function inde(){
+                index++;//每隔几秒，运行一次
+                if(index>5){//总共几张照片，超过后，重新回到第一张显示
+                    index=1;
+                }
+                showPictures.src='../img/'+index+'.jpg';   //拼接来验证
+            }
+
+               
+    </script>
+</body>
+</html>

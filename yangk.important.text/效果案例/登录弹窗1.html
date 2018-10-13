@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{padding: 0;margin: 0;}
+        .box{background: #cccccc; text-shadow: 255 255 255 -5px #39393d;padding:20px;}
+        .box h1{margin-bottom:20px ;}
+        .box ol{padding: 20px 50px;}
+        .box ol li ul{padding:0 10px;font-size:12px;} 
+         p{padding: 10px;}
+         #myform{position:absolute; 
+          width: 400px;height: 200px;background: #fff;
+          padding: 0;
+          }
+          #myform h3{border-bottom:1px solid #CCC;height: 22px;font-size: 15px;width: 380px;float: left;};
+          #myform h3 span{display: block;}
+          #myform  #span_btn{display: inline-block;font-size: 12px;text-align: center;
+                            float:right;width: 20px;height: 22px;cursor: pointer;}
+          #myform label{display:inline-block;text-align: right;width: 60px;height: 20px;margin: 0 20px;}
+          #myform #username,#password{width: 250px;}
+          #myform #checkbox{margin:0 0 0 100px;}
+          #myform #btn_button{margin:10px 100px;}
+          #myform p{margin: 0;padding: 0;text-align: center;}
+          #spanf{width: 20px;height: 20px;}
+          #myform  #span_btn:hover{background:firebrick;}
+          #input_text,#inputText{display: none;}
+          #bigbox{width: 100%;height: 100%;background:rgba(0, 0, 0, 0.3);display: none;
+          z-index: 9999;position: fixed;left: 0;top: 0;}
+    </style>
+    <script>
+       document.addEventListener('DOMContentLoaded',function(){
+           var btn=document.getElementsByClassName('btn')[0];
+           var load=document.getElementsByClassName('load')[0];
+           var myform=document.getElementById('myform');
+           var _btn=document.getElementById('span_btn');
+           var btn_=document.getElementById('btn_button');
+           var username=document.getElementById('username');
+           var password=document.getElementById('password');
+           var bigbox=document.getElementById('bigbox');
+           //点击，显示登录弹窗
+           btn.onclick=function(){
+            bigbox.style.display='block'; 
+              
+                //弹窗居中
+                 //计算left，top的值的值
+             myform.style.left=(window.innerWidth-myform.offsetWidth)/2+'px';
+             myform.style.top=(window.innerHeight-myform.offsetHeight)/2+'px';
+
+            //窗口改变时
+            window.onresize = function(){
+                myform.style.left=(window.innerWidth-myform.offsetWidth)/2+'px';
+            myform.style.top=(window.innerHeight-myform.offsetHeight)/2+'px';
+            }
+             //验证勾选
+            var checkbox=document.getElementById('checkbox');
+            checkbox.onclick=function(){
+            btn_.disabled = !checkbox.checked;
+            return this;
+            }  
+            
+            return false;    
+           }
+         
+            //弹窗拖拽效果开始
+            var myform_h3=document.getElementById('myform_h3')
+            myform_h3.onmousedown=function(e){
+                
+                var ox=e.offsetX;
+                var oy=e.offsetY;
+                document.onmousemove=function(evt){
+                    myform.style.left = evt.pageX - ox + 'px';
+                    myform.style.top = evt.pageY - oy + 'px';
+                    evt.preventDefault();
+                }
+
+            }
+
+         // 鼠标松开，清除mousemove事件
+			document.onmouseup = function(){
+				document.onmousemove = null;
+			}
+          //拖拽结束
+          //按下EsC键隐藏
+            document.onkeydown=function(e){
+                var key=e.keyCode||e.which;
+                if(key==27){
+                    bigbox.style.display='none';
+                    username.value='';
+                    password.value='';
+                    spanf.innerText='';
+                    spant.innerText='';
+                    return false;
+                }
+            }
+
+           //点击,X隐藏界面
+           _btn.onclick=function(){
+            bigbox.style.display='none';
+            username.value='';
+            password.value='';
+            spanf.innerText='';
+            spant.innerText='';
+               return false;
+             
+           }
+           //账号
+           var username=document.getElementById('username');
+           username.oninput=function(){
+           
+                var reg=/^[a-z][a-z0-9]{5,11}$/
+                var spanf=document.getElementById('spanf');
+                var inputText=document.getElementById('inputText');
+                var username=document.getElementById('username').value;
+                if(reg.test(username)){
+                    console.log(222)
+                    spanf.innerText='✔';
+                    inputText.value=''
+                    inputText.style.display='none'
+                    return true;
+                }else{
+                    spanf.innerText='';
+                    inputText.value='';
+                    return false;
+                }
+                
+           }
+        // 密码
+            var password=document.getElementById('password');
+            password.oninput=function(){
+                var reg = /^[^\s]{6,20}$/;
+            
+            var spant=document.getElementById('spant');
+            var input_text=document.getElementById('input_text');
+            var password=document.getElementById('password').value;
+            if(reg.test(password)){
+                console.log(222)
+                spant.innerText='✔';
+                input_text.value='';
+                return true;
+            }else{
+                spant.innerText='';
+                input_text.value='';
+                
+                return false;
+            }
+            
+            }
+           //验证
+            btn_.onclick=function(){
+           //验证账号
+           var username=document.getElementById('username').value;
+           var reg=/^[a-z][a-z0-9]{5,11}$/i
+           var spanf=document.getElementById('spanf');
+           var inputText=document.getElementById('inputText');
+           var password=document.getElementById('password').value;
+           var reg = /^[^\s]{6,20}$/;console.log(222)
+           var spant=document.getElementById('spant');
+           var input_text=document.getElementById('input_text');
+           if(!reg.test(username)){
+             
+               inputText.value='用户名有误';
+               inputText.style.display='block'
+                return false;
+           }
+           //验证密码
+           else if(reg.test(password)){
+            console.log(222)
+             spant.innerText='✔'; 
+             input_text.style.display='none';
+              //  转入登陆效果
+              load.innerHTML='您好欢迎来到国家登记系统，<a href="" class="btn">退出</a>'
+              bigbox.style.display="none"
+             return true;
+             
+           }else{
+             
+              console.log(222)
+            input_text.value='密码有误';
+            input_text.style.display='block'
+              return false;
+            };                  
+        }           
+       })
+    </script>
+</head>
+<body>
+
+
+
+    <div class="box">
+        <h1>弹窗登录效果</h1>
+        <p>要求:</p>
+        <ol>
+        <li>面上登录按钮，弹出登录框，并带半透明遮罩层</li>
+        <li>弹窗页面居中显示，并自适应浏览器窗口大小</li>
+        <li>弹窗标题具有拖拽效果</li>
+        <li>右上角按钮可关闭弹窗，ESC键关闭弹窗</li>
+        <li>登录验证
+            <ul>
+                <li>账号
+                    <ul>
+                        <li>弹窗标题具有拖拽效果</li>
+                        <li>弹窗标题具有拖拽效果</li>
+                        <li>弹窗标题具有拖拽效果</li>
+                    </ul>
+                </li>
+                <li>密码
+                    <ul>
+                        <li>弹窗标题具有拖拽效果</li>
+                        <li>弹具有拖拽效果</li>
+                    </ul>
+                </li>
+                <li>右上角按钮可关闭弹窗，ESC键关闭弹窗</li>
+                <li>右上角按钮可关闭弹窗，ESC键关闭弹窗</li>
+                <li>右上角按钮可关闭弹窗，ESC键关闭弹窗</li>
+            </ul>
+        </li>
+        </ol>
+    </div>
+      <!-- <form action="#" method="POST" > -->
+          <div id="bigbox">
+          <div id="myform" >
+         <div><h3 id="myform_h3"><span> 注册登录</span>  </h3><span id="span_btn">X</span></div> 
+          <label for="username">用户名:</label><input type="username" id="username" style="margin-bottom:13px"><span id="spanf"></span>
+          <input type="text" style="margin-left:100px ;border:0;color:red" id="inputText">
+          <br>
+          <label for="password">密码:</label><input type="password" id="password"  style="margin-bottom:13px"><span id="spant"></span>
+         <input type="text" style="margin-left:100px ;border:0;color:red" id="input_text">
+          <br>
+          <input type="checkbox" id="checkbox">同意<a href="">保密协议</a> <br>
+          <button id="btn_button" disabled>登录</button>
+        </div>
+            </div>
+      <!-- </form> -->
+    <p class="load">您好欢迎来到国家登记系统，请先<a href="" class="btn">登录</a></p>
+</body>
+</html>

@@ -1,0 +1,11 @@
+json数据(json字符串)
+
+    {"id" : 21465461461461, "name": "张三"},[{"id" : 21465461461461, "name": "张三"}]
+json数据格式要求
+json字符串的转换
+eval方法转换 eval("("+json字符串+")"); 它的作用是，将一个普通的json格式的字符串，转换成Json格式的对象 举例：
+    var list = eval("("+request.responseText+")");
+JSON对象(ES5)
+JSON.parse(); //把JSON字符串转成JSON对象(js对象/数组)
+JSON.stringify(); //把JSON对象转成JSON字符串
+加载json文件 前后端分离开发时模拟数据

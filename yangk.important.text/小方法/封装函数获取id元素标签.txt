@@ -1,0 +1,7 @@
+function $£¨id£©{
+
+return typeof id==="string"£¿document.getElementById(id):null
+
+}
+
+$("id").innerHTML

@@ -1,0 +1,196 @@
+正则表达式的四大操作（匹配，切割，替换，获取）
+ 
+
+这里只介绍js中对正则表达式的相关操作，关于正则表达式的详细介绍，请参考
+http://manual.phpv.net/regular_expression.html
+
+一、js中正则表达式操作
+
+1、定义正则表达式
+
+1）定义正则表达式有两种形式，一种是普通方式，一种是构造函数方式。
+2）普通方式：var reg=/表达式/附加参数 附加参数：用来扩展表达式的含义，目前主要有三个参数：
+g：代表可以进行全局匹配。
+i：代表不区分大小写匹配。
+m：代表可以进行多行匹配。 例子：
+var reg=/a*b/;
+var reg=/abc+f/g;
+3）构造函数方式：var reg=new RegExp(“表达式”,”附加参数”); 例子：
+var reg=new RegExp(“a*b”);
+var reg=new RegExp(“abc+f”,”g”);
+4）普通方式与构造函数方式的区别
+普通方式中的表达式必须是一个常量字符串，而构造函数中的表达式可以是常量字符串，也可以是一个js变量，例如根据用户的输入来作为表达式参数等等：
+var reg=new RegExp(document.forms[0].exprfiled.value,”g”);
+
+2、表达式操作，在这里是指和表达式相关的方法，我们将介绍六个方法。
+
+1）表达式对象（RegExp）方法： 1>exec(str)，返回str中与表达式相匹配的第一个字符串，而且以数组的形式表现，当然如果表达式中含有捕捉用的小括号，则返回的数组中也可能含有()中的匹配字符串，例如：
+var regx=/\d+/;
+var rs=regx.exec(“3432ddf53”);
+返回的rs值为：{3432}
+var regx2=new RegExp(“ab(\d+)c”);
+var rs2=regx2.exec(“ab234c44”);
+返回的rs值为：{ab234c,234}
+另外，如果有多个合适的匹配，则第一次执行exec返回一个第一个匹配，此时继续执行exec，则依次返回第二个第三个匹配。例如：
+var regx=/user\d/g;
+var rs=regx.exec(“ddduser1dsfuser2dd”);
+var rs1=regx.exec(“ddduser1dsfuser2dd”);
+则rs的值为{user1}，rs的值为{rs2}，当然注意regx中的g参数是必须的，否则无论exec执行多少次，都返回第一个匹配。后面还有相关内容涉及到对此想象的解释。 2>test(str)，判断字符串str是否匹配表达式，返回一个布尔值。例如：
+var regx=/user\d+/g;
+var flag=regx.test(“user12dd”);
+flag的值为true。
+
+2）String对象方法 1>match(expr)，返回与expr相匹配的一个字符串数组，如果没有加参数g，则返回第一个匹配，加入参数g则返回所有的匹配
+例子：
+var regx=/user\d/g;
+var str=“user13userddduser345”;
+var rs=str.match(regx);
+rs的值为：{user1,user3} 2>search(expr)，返回字符串中与expr相匹配的第一个匹配的index值。
+例子：
+var regx=/user\d/g;
+var str=“user13userddduser345”;
+var rs=str.search(regx);
+rs的值为：0 3>replace(expr,str)，将字符串中匹配expr的部分替换为str。另外在replace方法中，str中可以含有一种变量符号$，格式为$n，代表匹配中被记住的第n的匹配字符串（注意小括号可以记忆匹配）。
+例子：
+var regx=/user\d/g;
+var str=“user13userddduser345”;
+var rs=str.replace(regx,”00”);
+rs的值为：003userddd0045
+例子2：
+var regx=/u(se)r\d/g;
+var str=“user13userddduser345”;
+var rs=str.replace(regx,”$1”);
+rs的值为：se3userdddse45
+对于replace(expr,str)方法还要特别注意一点，如果expr是一个表达式对象则会进行全局替换（此时表达式必须附加参数g，否则也只是替换第一个匹配），如果expr是一个字符串对象，则只会替换第一个匹配的部分，例如：
+var regx=“user”
+var str=“user13userddduser345”;
+var rs=str.replace(regx,”00”);
+rs的值为： 0013userddduser345 4>split(expr)，将字符串以匹配expr的部分做分割，返回一个数组，而且表达式是否附加参数g都没有关系，结果是一样的。
+例子：
+var regx=/user\d/g;
+var str=“user13userddduser345”;
+var rs=str.split(regx);
+rs的值为：{3userddd,45}
+
+2、表达式相关属性
+
+1）表达式相关属性，是指和表达式相关的属性，如下面的形式：
+var regx=/myexpr/;
+var rs=regx.exec(str);
+其中，和表达式自身regx相关的属性有两个，和表达式匹配结果rs相关的属性有三个，下面将逐一介绍。
+2）和表达式自身相关的两个属性： 1>lastIndex，返回开始下一个匹配的位置，注意必须是全局匹配（表达式中带有g参数）时，lastIndex才会有不断返回下一个匹配值，否则该值为总是返回第一个下一个匹配位置，例如：
+var regx=/user\d/;
+var rs=regx.exec(“sdsfuser1dfsfuser2”);
+var lastIndex1=regx.lastIndex;
+rs=regx.exec(“sdsfuser1dfsfuser2”);
+var lastIndex2=regx.lastIndex;
+rs=regx.exec(“sdsfuser1dfsfuser2”);
+var lastIndex3=regx.lastIndex;
+上面lastIndex1为9，第二个lastIndex2也为9，第三个也是9；如果regx=/user\d/g，则第一个为9，第二个为18，第三个为0。 2>source，返回表达式字符串自身。例如：
+var regx=/user\d/;
+var rs=regx.exec(“sdsfuser1dfsfuser2”);
+var source=regx.source;
+source的值为user\d
+3）和匹配结果相关的三个属性： 1>index，返回当前匹配的位置。例如：
+var regx=/user\d/;
+var rs=regx.exec(“sdsfuser1dfsfuser2”);
+var index1=rs.index;
+rs=regx.exec(“sdsfuser1dfsfuser2”);
+var index2=rs.index;
+rs=regx.exec(“sdsfuser1dfsfuser2”);
+var index3=rs.index;
+index1为4，index2为4，index3为4，如果表达式加入参数g，则index1为4，index2为13，index3会报错（index为空或不是对象）。 2>input，用于匹配的字符串。例如：
+var regx=/user\d/;
+var rs=regx.exec(“sdsfuser1dfsfuser2”);
+var input=rs.input;
+input的值为sdsfuser1dfsfuser2。 3>[0]，返回匹配结果中的第一个匹配值，对于match而言可能返回一个多值的数字，则除了[0]外，还可以取[1]、[2]等等。例如：
+var regx=/user\d/;
+var rs=regx.exec(“sdsfuser1dfsfuser2”);
+var value1=rs[0];
+rs=regx.exec(“sdsfuser1dfsfuser2”);
+var value2=rs[0];
+value1的值为user1,value2的值为user2 3、实际应用 1）实际应用一
+描述：有一表单，其中有一个“用户名”input域
+要求：汉字，而且不能少于2个汉字，不能多于4个汉字。 <script>
+function checkForm(obj){
+var username=obj.username.value;
+var regx=/^[\u4e00-\u9fa5]{2,4}$/g
+if(!regx.test(username)){
+alert(“Invalid username!”);
+return false;
+}
+return true; </script>
+<form name=“myForm”onSubmit=“return checkForm(this)”>
+<input type=“text” name=“username”/>
+<input type=“submit” vlaue=“submit”/>
+</form>
+2）实际应用二
+描述：给定一个含有html标记的字符串，要求将其中的html标记去掉。 <script>
+function toPlainText(htmlStr){
+var regx=/<[^>]*>|<\/[^>]*>/gm;
+var str=htmlStr.replace(regx,"");
+return str; </script>
+<form name=“myForm”>
+<textarea id=“htmlInput”></textarea>
+<input type=“button” value=“submit” onclick=“toPlainText(document.getElementByIdx_x(‘htmlInput’).value”/>
+</form> 二、小结 1，Javascript 正则表达式，我想在一般的程序员之中，使用者应该不是很多，因为我们处理的页面一般都不是很复杂，而复杂的逻辑一般我们都在后台处理完成了。但是目前趋势 已经出现了扭转，富客户端已经被越来越多的人接受，而Javascript就是其中的关键技术，对于复杂的客户端逻辑而言，正则表达式的作用也是很关键 的，同时它也是Javascript高手必须要掌握的重要技术之一。 2，为了能够便于大家对前面讲述的内容有一个更为综合和深刻的认识，我将前面的一些关键点和容易犯糊涂的地方再系统总结一下，这部分很关键！
+
+
+总结1：附件参数g的用法
+表达式加上参数g之后，表明可以进行全局匹配，注意这里“可以”的含义。我们详细叙述：
+1）对于表达式对象的exec方法，不加入g，则只返回第一个匹配，无论执行多少次均是如此，如果加入g，则第一次执行也返回第一个匹配，再执行返回第二个匹配，依次类推。例如
+var regx=/user\d/;
+var str=“user18dsdfuser2dsfsd”;
+var rs=regx.exec(str);//此时rs的值为{user1}
+var rs2=regx.exec(str);//此时rs的值依然为{user1}
+如果regx=/user\d/g；则rs的值为{user1}，rs2的值为{user2}
+通过这个例子说明：对于exec方法，表达式加入了g，并不是说执行exec方法就可以返回所有的匹配，而是说加入了g之后，我可以通过某种方式得到所有的匹配，这里的“方式”对于exec而言，就是依次执行这个方法即可。
+2）对于表达式对象的test方法，加入g于不加上g没有什么区别。
+3） 对于String对象的match方法，不加入g，也只是返回第一个匹配，一直执行match方法也总是返回第一个匹配，加入g，则一次返回所有的匹配 （注意这与表达式对象的exec方法不同，对于exec而言，表达式即使加上了g，也不会一次返回所有的匹配）。例如：
+var regx=/user\d/;
+var str=“user1sdfsffuser2dfsdf”;
+var rs=str.match(regx);//此时rs的值为{user1}
+var rs2=str.match(regx);//此时rs的值依然为{user1}
+如果regx=/user\d/g，则rs的值为{user1,user2}，rs2的值也为{user1,user2}
+4）对于String对象的replace方法，表达式不加入g，则只替换第一个匹配，如果加入g，则替换所有匹配。（开头的三道测试题能很好的说明这一点）
+5）对于String对象的split方法，加上g与不加g是一样的，即：
+var sep=/user\d/;
+var array=“user1dfsfuser2dfsf”.split(sep);
+则array的值为{dfsf, dfsf}
+此时sep=/user\d/g，返回值是一样的。
+6）对于String对象的search方法，加不加g也是一样的。
+
+
+总结2：附加参数m的用法
+附加参数m，表明可以进行多行匹配，但是这个只有当使用^和$模式时才会起作用，在其他的模式中，加不加入m都可以进行多行匹配（其实说多行的字符串也是一个普通字符串），我们举例说明这一点
+1）使用^的例子
+var regx=/^b./g;
+var str=“bd76 dfsdf
+sdfsdfs dffs
+b76dsf sdfsdf”;
+var rs=str.match(regx);
+此 时加入g和不加入g，都只返回第一个匹配{bd}，如果regx=/^b./gm，则返回所有的匹配{bd,b7}，注意如果regx=/^b./m，则 也只返回第一个匹配。所以，加入m表明可以进行多行匹配，加入g表明可以进行全局匹配，综合到一起就是可以进行多行全局匹配
+2）使用其他模式的例子，例如
+var regx=/user\d/;
+var str=“sdfsfsdfsdf
+sdfsuser3 dffs
+b76dsf user6”;
+var rs=str.match(regx);
+此时不加参数g，则返回{user3}，加入参数g返回{user3,user6}，加不加入m对此没有影响。
+3）因此对于m我们要清楚它的使用，记住它只对^和$模式起作用，在这两种模式中，m的作用为：如果不加入m，则只能在第一行进行匹配，如果加入m则可以在所有的行进行匹配。我们再看一个^的例子
+var regx=/^b./;
+var str=“ret76 dfsdf
+bjfsdfs dffs
+b76dsf sdfsdf”;
+var rs=str.match(regx);
+此 时rs的值为null，如果加入g，rs的值仍然为null，如果加入m，则rs的值为{bj}（也就是说，在第一行没有找到匹配，因为有参数m，所以可 以继续去下面的行去找是否有匹配），如果m和g都加上，则返回{bj,b7}（只加m不加g说明，可以去多行进行匹配，但是找到一个匹配后就返回，加 入 g表明将多行中所有的匹配返回，当然对于match方法是如此，对于exec呢，则需要执行多次才能依次返回）
+
+总结3：在HTML的textarea输入域中，按一个Enter键，对应的控制字符为“\r\n”，即“回车换行”，而不是“\n\r”，即“换行回车”，我们看一个前面我们举过的例子：
+var regx=/a\r\nbc/;
+var str=“a
+bc”;
+var rs=regx.exec(str);
+结果：匹配成功，rs的值为：{ 
+
+      }，如果表达式为/a\n\rbc/，则不会被匹配，因此在一般的编辑器中一个”Enter”键代表着“回车换行”，而非“换行回车”，至少在
+分类: 正则

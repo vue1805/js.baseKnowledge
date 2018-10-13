@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    输入身份证号:<input type="text" id="id" name="id" value=""><br>
+出生日期:<input type="text" id="bd1" name="bd1" value="">年<input type="text" id="bd2" name="bd2" value="">月<input type="text" id="bd3" name="bd3" value="">日<br>
+性别:<input type="text" id="sex" name="sex" value=""><br>
+<input type="button" onclick="javascript:getData();" value="提取身份证信息">
+<script type="text/javascript">
+function getData(){
+   var g=function(s){return document.getElementById(s);};
+   if(!/^\d{6}((?:19|20)(?:(?:\d{2}(?:0[13578]|1[02])(?:0[1-9]|[12]\d|3[01]))|(?:\d{2}(?:0[13456789]|1[012])(?:0[1-9]|[12]\d|30))|(?:\d{2}02(?:0[1-9]|1\d|2[0-8]))|(?:(?:0[48]|[2468][048]|[13579][26])0229)))\d{2}(\d)[xX\d]$/.test(g('id').value)){
+      alert('身份证号非法.');
+      return;
+   }
+   g('bd1').value=(RegExp.$1).substr(0,4);
+   g('bd2').value=(RegExp.$1).substr(4,2);
+   g('bd3').value=(RegExp.$1).substr(6,4);
+   g('sex').value=(parseInt(RegExp.$2)%2==0?'女':'男');
+}
+</script>
+</body>
+</html>

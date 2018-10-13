@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        table{border:1px solid #ddd;border-collapse: collapse;}
+		td{border:1px solid #ddd;padding:3px 5px;cursor: pointer;}
+        .box{width: 600px;height: 400px; margin: 100px auto;}
+        .box span{display: block; width: 100%;height: 100%;text-align: center;background: beige}
+        .color{background:red;}
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+             var  box=document.querySelector('.box');
+             var  table=box.children[0];
+             var  tbody=table.children[1];
+            let data = [
+                {name:'刘备',nickname:'小刘',age:58,gender:'男',hobby:['撩妹','装逼','编草鞋']},
+                {name:'关羽',nickname:'关二',age:47,gender:'男',hobby:['耍大刀','变脸','喝酒']},
+                {name:'张飞',nickname:'张三',age:45,gender:'男',hobby:['打架','喝酒','耍流氓']},
+                {name:'赵云',nickname:'赵四',age:22,gender:'男',hobby:['打架','喝酒','耍帅']},
+                {name:'貂蝉',nickname:'美女',age:20,gender:'女',hobby:['撩汉','化妆']},
+                {name:'小乔',nickname:'乔二',age:18,gender:'女',hobby:['弹琴','唱歌','撩周瑜']}
+            ]
+              //根据数据生成表格
+               tbody.innerHTML='';
+            for(var i=0;i<data.length;i++){
+                  //根据数组数插入行
+                  var tr=tbody.insertRow(i)
+                 //把数组对象遍历提取出来，放入单元格
+                 var j=0;
+                  for(var item in data[i]){
+                      var td=tr.insertCell(j);
+                    td.innerHTML=data[i][item];//放入单元格
+                       j++;
+                  }
+                  //添加勾选框，和行号；
+                  tr.insertCell(0).innerHTML='<input type="checkbox" name="all" >'
+                  tr.insertCell(1).innerHTML=i+1;
+                  tr.insertCell(7).innerHTML='<span>X</span>';
+            }; 
+             //全选不选
+             var inputs=tbody.querySelectorAll('input');
+             var checkbox=document.getElementById('checkbox');
+             checkbox.onclick=function(){
+                 
+                 for(var i=0;i<inputs.length;i++){
+                      inputs[i].checked=this.checked;
+                      //高亮，不亮
+                      inputs[i].parentNode.parentNode.bgColor = '#d3d3d3'; 
+                            if(checkbox.checked==false){
+                        inputs[i].parentNode.parentNode.bgColor = '#fff';
+                    } 
+                 }
+               
+            }
+            
+            //只有一个没选上时候取消时候，全选取消
+            for(var i=0;i<inputs.length;i++){
+                    inputs[i].onclick=function(){
+                        if(!this.checked){
+                            checkbox.checked=false;
+                         
+                        }else{
+                         var unchecked=
+                        document.querySelector(
+                            "tbody td:first-child>input:not(:checked)"
+                        );
+                    if(unchecked===null)
+                        checkbox.checked=true;
+                        }
+                    }
+                 }
+              //点击任意单元格，并选中当前行/事件委托
+            tbody.onclick=function(e){
+                  
+                  //事件源兼容
+                    e=e||window.event;
+                    var target=e.target||e.srcElement;console.log(target.tagName)
+                    if(target.tagName=='TD'){ 
+                      if(target.parentNode.children[0].children[0].checked=true){
+                         //选中时，表格行高亮
+                         target.parentNode.bgColor = '#d3d3d3';   
+                      }    
+                        
+                    }
+                    //高亮，不高亮
+                    if(target.tagName=='INPUT'){
+                        console.log(target.tagName)
+                        if(target.checked==true){
+                            target.parentNode.parentNode.bgColor = '#d3d3d3';   
+                        }else{
+                            target.parentNode.parentNode.bgColor = '#fff'; 
+                        }
+                    }
+
+                 //删除表格行，自动更新行号
+                 if(target.tagName=='SPAN'){
+                     var current_tr=target.parentNode.parentNode;
+                     current_tr.parentNode.removeChild(current_tr);//删除表格行
+                     //自动更新行号.遍历tbody行数
+                    for(var i=0;i< tbody.rows.length;i++){
+                        var tr1= tbody.rows[i];console.log(i)
+                        var _td=  tbody.rows[i].children[1];
+                        _td.innerHTML=i+1;
+                    }
+                 }
+
+                
+              }
+            
+            
+
+        })
+    </script>
+</head>
+<body>
+    <div class="box">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th ><input type="checkbox" name="all" id="checkbox"></th>
+                                <th>#</th>
+                                <th>姓名</th>
+                                <th>昵称</th>
+                                <th>年龄</th>
+                                <th>性别</th>
+                                <th>爱好</th>
+                                <th >操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+    </div>
+</body>
+</html>

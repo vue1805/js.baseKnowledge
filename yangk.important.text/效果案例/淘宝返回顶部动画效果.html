@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        span{
+ 
+            position: fixed;
+            bottom: 120px;
+            right: 100px;
+            width: 70px;
+            height: 55px;
+            cursor:pointer;
+            text-align: center;
+            line-height: 20px;
+            padding-top: 15px;
+            background-color: #aaa;
+            display: none;
+        }
+ 
+    </style>
+    <script>
+        window.onload = function () {
+ 
+            //获取相关元素
+           var span = document.getElementsByTagName("span")[0];
+           
+           //绑定事件
+            //注意：移动屏幕无法使用animate操作，只能使用window.scrollto(x,y)浏览器显示区域跳转到指定的坐标
+            var leader =0;
+            var target = 0;
+            var timer = null;
+            span.onclick = function () {
+                // window.scrollTo()
+                clearInterval(timer);
+                timer = setInterval(function () {
+
+                    var speed = (target -leader)/10;
+
+                    speed = speed>0?Math.ceil(speed):Math.floor(speed);
+                    leader = leader+speed
+                    window.scrollTo(0,leader);
+                    if(speed ==0){
+                        clearInterval(timer);
+                    }
+                },10);
+ 
+            }
+ 
+            window.onscroll= function () {
+                var scr =scroll().top;
+                if (scr>300){
+                    span.style.display = "block";
+                }
+                leader = scroll().top;
+            }
+ 
+ 
+ 
+            //缓动动画封装
+            function animate(ele, target) {
+                clearInterval(ele.timer);
+
+                ele.timer = setInterval(function () {
+
+                    var step = (target - ele.offsetTop) / 10;
+
+                    step = step > 0 ? Math.ceil(step) : Math.floor(step);
+
+                    ele.style.top = ele.offsetTop + step + "px";
+                    console.log(1);
+
+                    if (Math.abs(target - ele.offsetTop) < Math.abs(step)) {
+                        ele.style.top = target + "px";
+                        clearInterval(ele.timer);
+                    }
+                }, 25);
+            }
+ 
+            // scroll的封装
+            function scroll() {
+                return {
+                    "top": window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop,
+                    
+                    "left": window.pageXOffset || document.body.scrollLeft || document.documentElement.scrollLeft
+                }
+            }
+ 
+ 
+        }
+    </script>
+</head>
+<body>
+    <div class="box" style="height: 5000px">
+        <span>返回<br>顶部</span>
+    </div>
+</body>
+
+<!-- 分析：
+基本原理和缓动动画实现原理一致， 利用定时器改变window.scrollTo( x,y)中y的坐标值，
+
+从绑定事件之下开始
+
+要用定时器，先清除定时器
+定义定时器
+书写定时器参数fn
+由于是缓动动画，每一步的步长是变化的所以我们在fn内部定义了speed去获取步长
+下面的speed =speed>0其实不是必要的，因为目标位置减去当前位置总是小于0的
+当前位置就是 每次的当前位置+步长，这样可以计算出下一步要到达的目标位置
+开始走动
+最后判断是否清除定时器
+      span.onclick = function () {
+                // window.scrollTo()
+                clearInterval(timer);
+                timer = setInterval(function () {
+                    var speed = (target -leader)/10;
+                    speed = speed>0?Math.ceil(speed):Math.floor(speed);
+                    leader = leader+speed
+                    window.scrollTo(0,leader);
+                    if(speed ==0){
+                        clearInterval(timer);
+                    }
+                },10);
+ 
+            }
+ -->

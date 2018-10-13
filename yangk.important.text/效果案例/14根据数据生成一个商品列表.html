@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>根据数据生成一个商品列表</title>
+	<style>
+		ul{list-style: none;padding:0;margin:0;}
+		#goodslist img{width:200px;}
+		#goodslist ul{overflow:hidden;}
+		#goodslist li{float:left;padding:15px;border-right:1px dotted #ccc;margin:15px;}
+
+		.price span{color:#f00;}
+		.price span::before{
+			content:'￥';
+		}
+	</style>
+</head>
+<body>
+	<h1>根据数据生成一个商品列表</h1>
+	<div id="goodslist">
+
+	</div>
+	<script>
+		/*
+			根据数据生成一个商品列表
+				* 二维数组
+
+				数据格式：[{},{},{},{}]
+		 */
+		// var arr = [10,[21,22,23],30,40,{name:'laoxie',age:18}];
+
+		// arr[2];//30
+		// arr[1][2];//23
+
+		// arr[4].name;//arr[4]['name'] => laoxie
+
+
+
+		// 商品数据
+		var data = [{
+                "id":"G001",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"shirt",
+                "imgurl":"img/161.jpg",
+                "price":899,
+                "off":398,
+                "star":4,
+                "hot":124
+            },
+            {
+                "id":"G002",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"shoes",
+                "imgurl":"img/162.jpg",
+                "price":698,
+                "off":599,
+                "star":5,
+                "hot":666
+            },
+            {
+                "id":"G003",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"手提包",
+                "imgurl":"img/163.jpg",
+                "price":398,
+                "off":199,
+                "star":5,
+                "hot":9502
+            },
+            {
+                "id":"G004",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"帽子",
+                "imgurl":"img/164.jpg",
+                "price":998,
+                "off":600,
+                "star":3,
+                "hot":10002
+            },
+            {
+                "id":"G005",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"shoes",
+                "imgurl":"img/165.jpg",
+                "price":198,
+                "off":99,
+                "star":4,
+                "hot":386
+            },
+            {
+                "id":"G006",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"shirt",
+                "imgurl":"img/166.jpg",
+                "price":6998,
+                "off":5999,
+                "star":2,
+                "hot":999
+            },
+            {
+                "id":"G007",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"shirt",
+                "imgurl":"img/167.jpg",
+                "price":1899,
+                "off":3298,
+                "star":4,
+                "hot":1024
+            },
+            {
+                "id":"G008",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"shoes",
+                "imgurl":"img/168.jpg",
+                "price":698,
+                "off":1599,
+                "star":3,
+                "hot":662
+            },
+            {
+                "id":"G009",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"手提包",
+                "imgurl":"img/169.jpg",
+                "price":398,
+                "off":1099,
+                "star":4,
+                "hot":91502
+            },
+            {
+                "id":"G0010",
+                "title":"Thermos 膳魔师 Funtainer系列水杯 12盎司（340g） 粉红色",
+                "category":"帽子",
+                "imgurl":"img/160.jpg",
+                "price":998,
+                "off":2600,
+                "star":1,
+                "hot":13002
+            }]
+
+
+	    
+	    // 获取元素
+	    var goodslist = document.getElementById('goodslist');
+
+	    // 声明一个变量，用于存放html结构
+	    var content = '<ul>';
+
+	    for(var i=0;i<data.length;i++){
+	    	// 拼接li
+	    	// 获取当前商品：data[i]
+	    	content += '<li >' + 
+	    			'<img src="'+data[i].imgurl+'">' + 
+	    			'<h4>'+data[i].name+'</h4>' + 
+	    			'<p>俗称：'+data[i].nickname+'</p>' + 
+	    			'<p class="price">原价：<del>'+data[i].price+'</del></p>' + 
+	    			'<p class="price">现价：<span>'+data[i].sale+'</span></p>' + 
+	    			'<p class="color">颜色：<span>'+data[i].color+'</span></p>' + 
+	    	'</li>';
+	    }
+
+	    // 闭合ul
+	    content += '</ul>';
+
+	    goodslist.innerHTML = content;
+	</script>
+</body>
+</html>

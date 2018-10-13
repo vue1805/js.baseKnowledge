@@ -1,0 +1,8 @@
+*{margin: 0;padding: 0;}
+.box{width:1350px;height: 800px;margin: 100px auto;position:relative;}
+.first_box{width: 675px;height: 800px;display:flex;flex-direction:column;justify-content: flex-end;align-items:center;}
+.first_box .smallbox{
+    width: 491px;height: 312px;
+    z-index:1;
+}
+.second_box{width: 986px;height: 800px;background: blue;position:absolute;left:375px;top:0;background: url('../img/ios_large.jpg') no-repeat;}
