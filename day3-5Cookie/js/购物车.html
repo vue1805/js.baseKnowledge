@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+</head>
+<script type="text/javascript">
+    
+    window.onload = function () {
+   
+   var oUl = $('list');
+   var totalNumber = $('totalNum');
+   var totalPrice = $('totalPrice');
+   var mostExpensive = $('mostExpensive');
+   var aLi = oUl.getElementsByTagName('li');
+   var maxPrice = [0];
+   
+   for ( var i = 0; i    price(aLi[i]);
+   }
+   
+   function price(oLi) {
+   
+    varaBtn=oLi.getElementsByTagName('input');
+   varoStrong=oLi.getElementsByTagName('strong')[0];
+    varoEm=oLi.getElementsByTagName('em')[0];
+    varoSpan=oLi.getElementsByTagName('span')[0];
+28   
+29    aBtn[0].onclick=function() {
+30     varnum=Number(oStrong.innerHTML);
+31     varprice=parseFloat(oEm.innerHTML);
+32     varnumbers=Number(totalNumber.innerHTML);
+33     varprices=parseFloat(totalPrice.innerHTML);
+34     num--;
+35     if (num === 0) {
+36      // 如果该商品数量为0，,那么就得把它的价格从价格表中清除
+37      varindex=maxPrice.indexOf(price);
+38      if (index > -1) maxPrice.splice(index, 1);
+39     } else if (num<0) {
+40      num=0;
+41      return;
+42     }
+43     numbers--;
+44     oStrong.innerHTML=num;
+45     oSpan.innerHTML=num* price + '元';
+46     totalNumber.innerHTML=numbers;
+47     totalPrice.innerHTML=prices- (num + 1) * price;
+48     mostExpensive.innerHTML=maxPrice[0];
+49   
+50    }
+51    aBtn[1].onclick=function() {
+52   
+53     varnum=Number(oStrong.innerHTML);
+54     varprice=parseFloat(oEm.innerHTML);
+55     varnumbers=Number(totalNumber.innerHTML);
+56     varprices=parseFloat(totalPrice.innerHTML);
+57   
+58     num++;
+59     numbers++;
+60     if (maxPrice.indexOf(price) < 0) {
+61      maxPrice.push(price)
+62      maxPrice.sort(function (a,b) {return b - a});
+63     }
+64     oStrong.innerHTML=num;
+65     oSpan.innerHTML=num* price + '元';
+66     totalNumber.innerHTML=numbers;
+67     totalPrice.innerHTML=prices+ num * price;
+68     mostExpensive.innerHTML=maxPrice[0];
+69    }
+70   }
+71   function $(id) {return document.getElementById(id);}
+72  }
+73  </script>
+ 
+
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>11元素的操作-属性（补充）</title>
+	<script>
+		/*
+			11元素的操作-属性（补充）
+
+				html属性
+					* getAttribute()	获取
+					* setAttribute()	设置
+					* removeAttribute()	删除
+					* hasAttribute()	判断
+				节点属性（节点就是对象）
+					* 获取： box.id
+					* 设置:  box.title = 'xxx'
+					* 删除： delete box.idx
+					* 判断： if(box.idx === undefined){不存在idx属性}
+		 */
+		
+		window.onload = function(){
+			
+		}
+	</script>
+</head>
+<body>
+	<h1>11元素的操作-属性（补充）</h1>
+	<div id="box">
+		hello tiantian
+	</div>
+</body>
+</html>
+//添加商品飞入购物车（写入cookie）
+// (function(){
+// 	//获取页面元素
+// 	var bigimg=document.getElementById("bigimg");
+// 	var goodsname=document.getElementById("goodsname");
+// 	var goodsku=document.getElementById("goodsku");
+// 	var prices=document.getElementById("prices");
+// 	var car_btn = document.querySelector('.car_btn');
+// 	var numinput = document.querySelector('#numinput');
+// 	//存入对象
+// 	var goodslist = []
+// 	//点击事件
+// 	car_btn.onclick = ()=>{
+// 		//获取商品信息，写入对象
+// 		var mygoods = {
+// 			imgurl:bigimg.src,
+// 			name:goodsname.innerText,
+// 			qty:numinput.innerText,
+// 			prices:innerText,
+// 		}
+// 		//把当前商品写入数组
+// 		goodslist.push(mygoods);
+// 		//写入cookie
+// 		Cookie.set('goodslist',JSON.stringify(goodslist));
+// 	}
+	
+// })();
+
